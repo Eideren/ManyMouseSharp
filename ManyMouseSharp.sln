@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManyMouseTest", "ManyMouseTest\ManyMouseTest.csproj", "{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManyMouseSharp", "ManyMouseSharp.csproj", "{93680395-D034-47F1-81F7-CCA585D93BDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|x64.Build.0 = Release|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E5C7A9D-363B-4451-996B-0068C2A3BA8E}.Release|x86.Build.0 = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|x64.Build.0 = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Debug|x86.Build.0 = Debug|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|x64.ActiveCfg = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|x64.Build.0 = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|x86.ActiveCfg = Release|Any CPU
+		{93680395-D034-47F1-81F7-CCA585D93BDA}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

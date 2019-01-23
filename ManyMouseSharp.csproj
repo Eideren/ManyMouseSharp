@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+      <None Update="libManyMouse.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="libManyMouse.so">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Remove="ManyMouseTest\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="ManyMouseTest\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Remove="ManyMouseTest\**" />
+    </ItemGroup>
+</Project>
