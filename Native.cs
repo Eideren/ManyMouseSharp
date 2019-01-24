@@ -1,6 +1,8 @@
 ﻿namespace ManyMouseSharp
 {
     using System;
+    using System.IO;
+    using System.Reflection;
     using System.Runtime.InteropServices;
     
     public enum ManyMouseEventType
@@ -30,21 +32,73 @@
     
     internal static class Native
     {
-        const string dllLocation = "libManyMouse";
-
-        [ DllImport( dllLocation ) ]
+        [ DllImport( importedLib ) ]
         internal static extern int ManyMouse_Init();
-        [ DllImport( dllLocation ) ]
+        [ DllImport( importedLib ) ]
         internal static extern void ManyMouse_Quit();
-        [ DllImport( dllLocation ) ]
+        [ DllImport( importedLib ) ]
         internal static extern int ManyMouse_PollEvent( ref ManyMouseEvent mouseEvent );
 
         /// <summary> UTF8 </summary>
-        [ DllImport( dllLocation ) ]
+        [ DllImport( importedLib ) ]
         internal static extern IntPtr ManyMouse_DriverName();
 
         /// <summary> ANSI </summary>
-        [ DllImport( dllLocation, CharSet = CharSet.Ansi ) ]
+        [ DllImport( importedLib, CharSet = CharSet.Ansi ) ]
         internal static extern IntPtr ManyMouse_DeviceName( uint index );
+
+        
+        
+        const string libDir      = "lib";
+        const string selectedDir = "selected";
+        const string dllName     = "libManyMouse";
+        const string importedLib = libDir + "/" + selectedDir + "/" + dllName;
+        static Native()
+        {
+            // Since DllImport's path is constant we'll manually select the right lib and
+            // move it to the location that dotnet expects to avoid compiling for each platforms.
+            {
+                string extension;
+                string osDir;
+                string bitDir = Environment.Is64BitProcess ? "x64" : "x86";
+    
+                switch( Environment.OSVersion.Platform )
+                {
+                    case PlatformID.Unix: extension = "so"; osDir = "unix"; break;
+                    case PlatformID.MacOSX: extension = "dyndl"; osDir = "osx"; break;
+
+                    case PlatformID.Xbox:
+                    case PlatformID.Win32S:
+                    case PlatformID.Win32Windows:
+                    case PlatformID.WinCE:
+                    case PlatformID.Win32NT:
+                    {
+                        extension = "dll";
+                        osDir = "win";
+                        break;
+                    }
+                    default: return;
+                }
+
+                string managedLibDir = new FileInfo( Assembly.GetExecutingAssembly().Location ).DirectoryName;
+    
+                string source = $"{libDir}/{osDir}/{bitDir}/{dllName}.{extension}";
+                string dest = $"{importedLib}.{extension}";
+                // If path doesn't exist, try to find it locally to this lib's path instead of this + lib/
+                if( !File.Exists( $"{managedLibDir}/{source}" ) )
+                {
+                    source = source.Remove( libDir.Length + 1 );
+                    dest   = dest.Remove( libDir.Length   + 1 );
+                }
+                
+                // Make them local to the current lib's folder
+                source = $"{managedLibDir}/{source}";
+                dest = $"{managedLibDir}/{dest}";
+                
+                // Create dir which will house our selected dll
+                Directory.CreateDirectory( $"{managedLibDir}/{libDir}/{selectedDir}" );
+                File.Copy( source, dest, true );
+            }
+        }
     }
 }
