@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+    <metadata minClientVersion="3.3">
+        <id>ManyMouseSharp</id>
+        <version>1.0.2.0</version>
+        <authors>Eideren</authors>
+        <owners>Eideren</owners>
+        <licenseUrl>https://raw.githubusercontent.com/Eideren/ManyMouseSharp/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/Eideren/ManyMouseSharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Simple cross-platform wrapper for ManyMouse.</description>
+        <releaseNotes>Initial.</releaseNotes>
+        <copyright>Copyright © Eideren and contributors.</copyright>
+        <tags>ManyMouse Mouse Mice Raw Input</tags>
+        <dependencies>
+        </dependencies>
+        <contentFiles>
+            <files include="**" buildAction="Content" copyToOutput="true" />
+        </contentFiles>
+    </metadata>
+    <files>
+        <file src="bin\Release\**" exclude="bin\Release\lib" target="lib" />
+        <file src="lib\**" target="contentFiles\any\any\lib" />
+    </files>
+</package>

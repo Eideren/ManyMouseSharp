@@ -1,14 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Authors>Eideren</Authors>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Description>Simple cross-platform wrapper for ManyMouse.</Description>
-        <PackageTags>ManyMouse Mouse Mice Raw Input</PackageTags>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/Eideren/ManyMouseSharp/master/LICENSE.md</PackageLicenseUrl>
-        <RepositoryUrl>https://github.com/Eideren/ManyMouseSharp</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <Copyright>Copyright © Eideren and contributors.</Copyright>
     </PropertyGroup>
     <ItemGroup>
       <None Update="lib\**">
