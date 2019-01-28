@@ -65,7 +65,7 @@
                 switch( Environment.OSVersion.Platform )
                 {
                     case PlatformID.Unix: extension = "so"; osDir = "unix"; break;
-                    case PlatformID.MacOSX: extension = "dyndl"; osDir = "osx"; break;
+                    case PlatformID.MacOSX: extension = "dylib"; osDir = "osx"; break;
 
                     case PlatformID.Xbox:
                     case PlatformID.Win32S:
