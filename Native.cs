@@ -81,22 +81,32 @@
                 }
 
                 string managedLibDir = new FileInfo( Assembly.GetExecutingAssembly().Location ).DirectoryName;
-    
-                string source = $"{libDir}/{osDir}/{bitDir}/{dllName}.{extension}";
+
+
+                string source = Path.Combine( libDir, osDir, bitDir, $"{dllName}.{extension}" );
                 string dest = $"{importedLib}.{extension}";
                 // If path doesn't exist, try to find it locally to this lib's path instead of this + lib/
-                if( !File.Exists( $"{managedLibDir}/{source}" ) )
+                if( !File.Exists( Path.Combine( managedLibDir, source ) ) )
                 {
                     source = source.Remove( libDir.Length + 1 );
                     dest   = dest.Remove( libDir.Length   + 1 );
                 }
                 
                 // Make them local to the current lib's folder
-                source = $"{managedLibDir}/{source}";
-                dest = $"{managedLibDir}/{dest}";
+                source = Path.Combine( managedLibDir, source );
+                dest = Path.Combine( managedLibDir, dest );
                 
                 // Create dir which will house our selected dll
-                Directory.CreateDirectory( $"{managedLibDir}/{libDir}/{selectedDir}" );
+                Directory.CreateDirectory( Path.Combine( managedLibDir, libDir, selectedDir ) );
+                if( File.Exists( dest ) )
+                {
+                    var srcInfo = new FileInfo( source );
+                    var destInfo = new FileInfo( dest );
+                    // Files have an extremely small chance of not being equal, let's say they are equal
+                    if( srcInfo.Length == destInfo.Length && srcInfo.LastWriteTimeUtc == destInfo.LastWriteTimeUtc )
+                        return;
+                }
+                // Files aren't equal, copy over
                 File.Copy( source, dest, true );
             }
         }
