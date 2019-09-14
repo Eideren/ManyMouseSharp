@@ -26,7 +26,7 @@ namespace ManyMouseSharp
 		/// <summary>
 		/// ManyMouse is not thread safe, this wrapper will throw if the caller isn't the one who ran Init()
 		/// </summary>
-		public static bool IgnoreThreadSafety{ get; private set; } = false;
+		public static bool IgnoreThreadSafety{ get; set; } = false;
 
 		/// <summary>
 		/// The thread that called Init(), null if it hasn't been called yet.
@@ -35,6 +35,8 @@ namespace ManyMouseSharp
 
 		public static int AmountOfMiceDetected{ get; private set; } = 0;
 
+		static object _lock = new object();
+
 		/// <summary>
 		/// Initialize the system and returns the amount of mice found.
 		/// </summary>
@@ -42,11 +44,13 @@ namespace ManyMouseSharp
 		/// <exception cref="AlreadyInitException">Will throw if Init() called while already init.</exception>
 		public static int Init()
 		{
-			if( CallingThread != null )
-				throw new AlreadyInitException();
-			
+			lock( _lock )
+			{
+				if( CallingThread != null )
+					throw new AlreadyInitException();
+				CallingThread = Thread.CurrentThread;
+			}
 			int result = Native.ManyMouse_Init();
-			CallingThread = Thread.CurrentThread;
 			AmountOfMiceDetected = result < 0 ? 0 : result;
 			
 			{ // Fetch driver name
