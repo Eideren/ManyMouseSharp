@@ -59,80 +59,76 @@ namespace ManyMouseSharp
         
         static Native()
         {
-            // Since DllImport's path is constant we'll manually select the right lib and
-            // move it to the location that dotnet expects to avoid compiling for each platforms.
+            string extension;
+            string osDir;
+            string bitDir = Environment.Is64BitProcess ? "x64" : "x86";
+
+            switch( Environment.OSVersion.Platform )
             {
-                string extension;
-                string osDir;
-                string bitDir = Environment.Is64BitProcess ? "x64" : "x86";
-    
-                switch( Environment.OSVersion.Platform )
-                {
-                    case PlatformID.Unix: extension = "so"; osDir = "unix"; break;
-                    case PlatformID.MacOSX: extension = "dylib"; osDir = "osx"; break;
+                case PlatformID.Unix: extension = "so"; osDir = "unix"; break;
+                case PlatformID.MacOSX: extension = "dylib"; osDir = "osx"; break;
 
-                    case PlatformID.Xbox:
-                    case PlatformID.Win32S:
-                    case PlatformID.Win32Windows:
-                    case PlatformID.WinCE:
-                    case PlatformID.Win32NT:
-                    {
-                        extension = "dll";
-                        osDir = "win";
-                        break;
-                    }
-                    default: return;
-                }
-
-                string managedLibDir = new FileInfo( Assembly.GetExecutingAssembly().Location ).DirectoryName;
-
-                string source = Path.Combine( libDir, osDir, bitDir, $"{dllName}.{extension}" );
-                if( !File.Exists( Path.Combine( managedLibDir, source ) ) )
+                case PlatformID.Xbox:
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.WinCE:
+                case PlatformID.Win32NT:
                 {
-                    // If path doesn't exist, try to find it locally to this lib's path instead of this + lib/
-                    source = source.Remove( libDir.Length + 1 );
+                    extension = "dll";
+                    osDir = "win";
+                    break;
                 }
-                
-                IntPtr pDll;
-                IntPtr ptrManyMouse_Init;
-                IntPtr ptrManyMouse_Quit;
-                IntPtr ptrManyMouse_PollEvent;
-                IntPtr ptrManyMouse_DriverName;
-                IntPtr ptrManyMouse_DeviceName;
-                
-                switch( Environment.OSVersion.Platform )
-                {
-                    case PlatformID.Unix:
-                        pDll = LibraryOperations.dlopen(source, LibraryOperations.RTLD_NOW);
-                        ptrManyMouse_Init = LibraryOperations.dlsym(pDll, "ManyMouse_Init");
-                        ptrManyMouse_Quit = LibraryOperations.dlsym(pDll, "ManyMouse_Quit");
-                        ptrManyMouse_PollEvent = LibraryOperations.dlsym(pDll, "ManyMouse_PollEvent");
-                        ptrManyMouse_DriverName = LibraryOperations.dlsym(pDll, "ManyMouse_DriverName");
-                        ptrManyMouse_DeviceName = LibraryOperations.dlsym(pDll, "ManyMouse_DeviceName");
-                        break;
-                    case PlatformID.Xbox:
-                    case PlatformID.WinCE:
-                    case PlatformID.Win32NT:
-                    case PlatformID.Win32Windows:
-                    case PlatformID.Win32S:
-                        pDll = LibraryOperations.LoadLibrary(source);
-                        ptrManyMouse_Init = LibraryOperations.GetProcAddress(pDll, "ManyMouse_Init");
-                        ptrManyMouse_Quit = LibraryOperations.GetProcAddress(pDll, "ManyMouse_Quit");
-                        ptrManyMouse_PollEvent = LibraryOperations.GetProcAddress(pDll, "ManyMouse_PollEvent");
-                        ptrManyMouse_DriverName = LibraryOperations.GetProcAddress(pDll, "ManyMouse_DriverName");
-                        ptrManyMouse_DeviceName = LibraryOperations.GetProcAddress(pDll, "ManyMouse_DeviceName");
-                        break;
-                    case PlatformID.MacOSX:
-                    default:
-                        throw new NotImplementedException( $"ManyMouse dll loading for {Environment.OSVersion.Platform} not implemented." );
-                }
-                
-                ManyMouse_Init = Marshal.GetDelegateForFunctionPointer<ManyMouse_Init_Type>( ptrManyMouse_Init );
-                ManyMouse_Quit = Marshal.GetDelegateForFunctionPointer<ManyMouse_Quit_Type>( ptrManyMouse_Quit);
-                ManyMouse_PollEvent = Marshal.GetDelegateForFunctionPointer<ManyMouse_PollEvent_Type>( ptrManyMouse_PollEvent);
-                ManyMouse_DriverName = Marshal.GetDelegateForFunctionPointer<ManyMouse_DriverName_Type>( ptrManyMouse_DriverName);
-                ManyMouse_DeviceName = Marshal.GetDelegateForFunctionPointer<ManyMouse_DeviceName_Type>( ptrManyMouse_DeviceName);
+                default: return;
             }
+
+            string managedLibDir = new FileInfo( Assembly.GetExecutingAssembly().Location ).DirectoryName;
+
+            string source = Path.Combine( libDir, osDir, bitDir, $"{dllName}.{extension}" );
+            if( !File.Exists( Path.Combine( managedLibDir, source ) ) )
+            {
+                // If path doesn't exist, try to find it locally to this lib's path instead of this + lib/
+                source = source.Remove( libDir.Length + 1 );
+            }
+            
+            IntPtr pDll;
+            IntPtr ptrManyMouse_Init;
+            IntPtr ptrManyMouse_Quit;
+            IntPtr ptrManyMouse_PollEvent;
+            IntPtr ptrManyMouse_DriverName;
+            IntPtr ptrManyMouse_DeviceName;
+            
+            switch( Environment.OSVersion.Platform )
+            {
+                case PlatformID.Unix:
+                    pDll = LibraryOperations.dlopen(source, LibraryOperations.RTLD_NOW);
+                    ptrManyMouse_Init = LibraryOperations.dlsym(pDll, "ManyMouse_Init");
+                    ptrManyMouse_Quit = LibraryOperations.dlsym(pDll, "ManyMouse_Quit");
+                    ptrManyMouse_PollEvent = LibraryOperations.dlsym(pDll, "ManyMouse_PollEvent");
+                    ptrManyMouse_DriverName = LibraryOperations.dlsym(pDll, "ManyMouse_DriverName");
+                    ptrManyMouse_DeviceName = LibraryOperations.dlsym(pDll, "ManyMouse_DeviceName");
+                    break;
+                case PlatformID.Xbox:
+                case PlatformID.WinCE:
+                case PlatformID.Win32NT:
+                case PlatformID.Win32Windows:
+                case PlatformID.Win32S:
+                    pDll = LibraryOperations.LoadLibrary(source);
+                    ptrManyMouse_Init = LibraryOperations.GetProcAddress(pDll, "ManyMouse_Init");
+                    ptrManyMouse_Quit = LibraryOperations.GetProcAddress(pDll, "ManyMouse_Quit");
+                    ptrManyMouse_PollEvent = LibraryOperations.GetProcAddress(pDll, "ManyMouse_PollEvent");
+                    ptrManyMouse_DriverName = LibraryOperations.GetProcAddress(pDll, "ManyMouse_DriverName");
+                    ptrManyMouse_DeviceName = LibraryOperations.GetProcAddress(pDll, "ManyMouse_DeviceName");
+                    break;
+                case PlatformID.MacOSX:
+                default:
+                    throw new NotImplementedException( $"ManyMouse dll loading for {Environment.OSVersion.Platform} not implemented." );
+            }
+            
+            ManyMouse_Init = Marshal.GetDelegateForFunctionPointer<ManyMouse_Init_Type>(ptrManyMouse_Init);
+            ManyMouse_Quit = Marshal.GetDelegateForFunctionPointer<ManyMouse_Quit_Type>(ptrManyMouse_Quit);
+            ManyMouse_PollEvent = Marshal.GetDelegateForFunctionPointer<ManyMouse_PollEvent_Type>(ptrManyMouse_PollEvent);
+            ManyMouse_DriverName = Marshal.GetDelegateForFunctionPointer<ManyMouse_DriverName_Type>(ptrManyMouse_DriverName);
+            ManyMouse_DeviceName = Marshal.GetDelegateForFunctionPointer<ManyMouse_DeviceName_Type>(ptrManyMouse_DeviceName);
         }
     }
     
